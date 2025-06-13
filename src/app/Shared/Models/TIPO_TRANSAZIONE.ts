@@ -1,0 +1,4 @@
+export enum TIPO_TRANSAZIONE  {
+    ENTRATA = 'ENTRATA',
+    USCITA = 'USCITA'
+}
