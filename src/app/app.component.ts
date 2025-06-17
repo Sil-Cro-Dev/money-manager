@@ -1,5 +1,5 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {MatTab, MatTabBody, MatTabGroup} from "@angular/material/tabs";
+import { Component, OnInit} from '@angular/core';
+import {MatTab, MatTabBody, MatTabContent, MatTabGroup} from "@angular/material/tabs";
 import {MatFabButton} from "@angular/material/button";
 import {MatMenu, MatMenuContent, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {MatIcon} from "@angular/material/icon";
@@ -7,8 +7,16 @@ import {MatCard} from "@angular/material/card";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
 import {TransazioneComponent} from "./modules/transazione/transazione.component";
 import {TransazioneService} from "./Shared/Services/transazione.service";
+import {PieComponent} from "./Shared/charts/pie/pie.component";
+import {CategoriaService} from "./Shared/Services/categoria.service";
+import {TIPO_TRANSAZIONE} from "./Shared/Models/TIPO_TRANSAZIONE";
+import {MatProgressBar} from "@angular/material/progress-bar";
+import {DatiGraficoTorta, PieChartComponent} from "./Shared/charts/pie-chart/pie-chart.component";
+import {JsonPipe} from "@angular/common";
+import {finalize, forkJoin, map, Observable, switchMap, tap} from "rxjs";
 import {Transazione} from "./Shared/Models/Transazione";
-import {JSON} from "@jsonjoy.com/util/lib/json-brand";
+import {Categoria} from "./Shared/Models/Categoria";
+import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 
 @Component({
     selector: 'app-root',
@@ -24,29 +32,26 @@ import {JSON} from "@jsonjoy.com/util/lib/json-brand";
         MatIcon,
         MatCard,
         TransazioneComponent,
-        MatTabBody
+        MatTabBody,
+        PieComponent,
+        MatTabContent,
+        MatProgressBar,
+        PieChartComponent,
+        JsonPipe,
+        DashboardComponent
     ],
     providers: [],
     template: `
         <mat-card class="h-full rounded-none" style="border-radius: 0">
             <mat-tab-group class="w-full min-h-full">
-                <mat-tab label="📊 Dashboard">
-                    <div class="min-h-full">
-                        @for (uscita of uscite; track uscita.id) {
-                            <pre>{{ JSON.stringify(uscita) }}</pre>
-                        }
-                    </div>
-                </mat-tab>
+                <mat-tab label="📊 Dashboard"><app-dashboard /></mat-tab>
                 <mat-tab label="💸 Transazioni">Transazioni</mat-tab>
                 <mat-tab label="🏷️ Categorie">Categorie</mat-tab>
             </mat-tab-group>
-            <!--      <router-outlet></router-outlet>-->
-
             <button mat-fab color="primary" style="position: fixed" class="fixed right-4 bottom-4"
                     (click)="apriTransazioni()">
                 <mat-icon>add</mat-icon>
             </button>
-
         </mat-card>
     `,
     styles: `
@@ -54,27 +59,33 @@ import {JSON} from "@jsonjoy.com/util/lib/json-brand";
 })
 export class AppComponent implements OnInit {
 
-    private _bottomSheet = inject(MatBottomSheet);
-    uscite: Transazione[] | undefined;
+    isLoading: boolean = false;
 
-    constructor(private transazioneService: TransazioneService) {
+
+    constructor(
+        private transazioneService: TransazioneService,
+        private categoriaService: CategoriaService,
+        private _bottomSheet: MatBottomSheet) {
     }
 
     ngOnInit(): void {
-        this.getUscite();
     }
 
 
     apriTransazioni(): void {
-        this._bottomSheet.open(TransazioneComponent).afterDismissed().subscribe(res => {
-            if (res) this.getUscite();
-        });
+        this._bottomSheet.open(TransazioneComponent).afterDismissed()
+            .subscribe(res => {
+                if (res) {
+                    res.provenienza == TIPO_TRANSAZIONE.USCITA ? this.getUscite() : this.getEntrate();
+                }
+            });
     }
 
     getUscite() {
-        this.transazioneService.getUscite().then(res => this.uscite = res)
+    }
+
+    getEntrate() {
     }
 
 
-    protected readonly JSON = JSON;
 }

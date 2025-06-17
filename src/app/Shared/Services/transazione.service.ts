@@ -3,6 +3,7 @@ import {addDoc, collection, Firestore, getDocs, query, where} from "@angular/fir
 import {Transazione} from "../Models/Transazione";
 import {Categoria} from "../Models/Categoria";
 import {TIPO_TRANSAZIONE} from "../Models/TIPO_TRANSAZIONE";
+import {from, Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -14,20 +15,27 @@ export class TransazioneService {
     constructor(private firestore: Firestore) {
     }
 
-    aggiungiTransazione(transazione: Transazione): Promise<any> {
-        return addDoc(this.transazione, {...transazione}) as Promise<any>;
+    aggiungiTransazione(transazione: Transazione): Observable<any> {
+        return from(addDoc(this.transazione, {...transazione}) as Promise<any>) as Observable<any>;
     }
 
-    getEntrate(): Promise<Transazione[]> {
-        return getDocs(query(this.transazione, where('tipologia', '==', TIPO_TRANSAZIONE.ENTRATA))).then(res => res.docs.map(doc => {
+    getEntrate(): Observable<Transazione[]> {
+        return from(getDocs(query(this.transazione, where('tipologia', '==', TIPO_TRANSAZIONE.ENTRATA))).then(res => res.docs.map(doc => {
             return {...doc.data(), id: doc.id};
-        })) as Promise<Transazione[]>;
+        })) as Promise<Transazione[]>) as Observable<Transazione[]>;
     }
 
-    getUscite(): Promise<Transazione[]> {
-        return getDocs(query(this.transazione, where('tipologia', '==', TIPO_TRANSAZIONE.USCITA))).then(res => res.docs.map(doc => {
+    getUscite(): Observable<Transazione[]> {
+        return from(getDocs(query(this.transazione, where('tipologia', '==', TIPO_TRANSAZIONE.USCITA))).then(res => res.docs.map(doc => {
             return {...doc.data(), id: doc.id};
-        })) as Promise<Transazione[]>;
+        })) as Promise<Transazione[]>) as Observable<Transazione[]>;
     }
+
+    getTransazioni(): Observable<Transazione[]> {
+        return from(getDocs(query(this.transazione, where('tipologia', '!=', ''))).then(res => res.docs.map(doc => {
+            return {...doc.data(), id: doc.id};
+        })) as Promise<Transazione[]>) as Observable<Transazione[]>;
+    }
+
 
 }

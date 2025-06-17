@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Categoria} from "../Models/Categoria";
-import {Firestore, addDoc, collection, getDocs, query, where} from "@angular/fire/firestore";
+import {Firestore, addDoc, collection, getDocs, query, where, doc, getDoc} from "@angular/fire/firestore";
+import {from, Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +27,13 @@ export class CategoriaService {
         })) as Promise<Categoria[]>;
     }
 
+    getCategoriaUscitaById(idCategoria: string): Observable<Categoria> {
+        return from(getDoc(doc(this.categoriaUscite, idCategoria)).then(res => {
+            return {...res.data(), id: res.id}
+        }) as Promise<Categoria>) as Observable<Categoria>;
+    }
+
+
     // gestione delle uscite
     aggiungiCategoriaUscite(categoriaUscite: Categoria): Promise<any> {
         return addDoc(this.categoriaUscite, {...categoriaUscite});
@@ -37,6 +45,11 @@ export class CategoriaService {
         })) as Promise<Categoria[]>;
     }
 
+    getCategoriaEntrateById(idCategoria: string): Observable<Categoria> {
+        return from(getDoc(doc(this.categoriaEntrate, idCategoria)).then(res => {
+            return {...res.data(), id: res.id}
+        }) as Promise<Categoria>) as Observable<Categoria>;
+    }
 
 }
 

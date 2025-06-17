@@ -1,7 +1,7 @@
 import {TIPO_TRANSAZIONE} from "./TIPO_TRANSAZIONE";
 
 export interface Categoria {
-    id?: number;
+    id?: string;
     nomeCategoria: string;
     tipoCategoria: TIPO_TRANSAZIONE
 }

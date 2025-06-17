@@ -79,8 +79,8 @@ export class CategoriaComponent implements OnInit {
     @ViewChild('nomeCategoriaInput') nomeCategoriaRef!: ElementRef;
     protected readonly TIPO_TRANSAZIONE = TIPO_TRANSAZIONE;
     categoriaForm = this.fb.group({
-        nomeCategoria: ['', Validators.required],
         tipologia: [TIPO_TRANSAZIONE.USCITA, Validators.required],
+        nomeCategoria: ['', Validators.required],
     });
 
     constructor(
@@ -104,7 +104,7 @@ export class CategoriaComponent implements OnInit {
             this.categoriaForm.get('tipologia')?.value == TIPO_TRANSAZIONE.USCITA
                 ? this.categoriaService.aggiungiCategoriaUscite(categoria).then(() => this.chiudi())
                 : this.categoriaService.aggiungiCategoriaEntrate(categoria).then(() => this.chiudi())
-        }
+        } else this.categoriaForm.markAllAsTouched();
     }
 
     chiudi(data?: any) {

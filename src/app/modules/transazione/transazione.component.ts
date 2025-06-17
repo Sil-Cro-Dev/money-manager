@@ -64,18 +64,17 @@ import {toggleFocus} from "../../Shared/metodUtils";
             <div class="flex flex-col w-full">
                 <mat-label class="font-medium">Importo</mat-label>
                 <mat-form-field appearance="outline" class="w-full">
-                    <input matInput type="number" placeholder="0,00" formControlName="importo" #importoInput (focus)="toggleFocus(importoRef)" (blur)="toggleFocus(importoRef)">
+                    <input matInput type="number" placeholder="0,00" formControlName="importo" #importoInput
+                           (focus)="toggleFocus(importoRef)" (blur)="toggleFocus(importoRef)">
                     <span matTextPrefix>€&nbsp;</span>
-                    @if (transazioneForm.get('importo')?.invalid && transazioneForm.get('importo')?.hasError('required')) {
-                        <mat-error>Inserire l'importo</mat-error>
-                    }
                 </mat-form-field>
             </div>
 
             <div class="flex flex-col w-full">
                 <mat-label class="font-medium">Descrizione</mat-label>
                 <mat-form-field appearance="outline" class="w-full ">
-                    <input matInput placeholder="Descrizione" formControlName="descrizione" #descrizioneInput (focus)="toggleFocus(descrizioneRef)" (blur)="toggleFocus(descrizioneRef)">
+                    <input matInput placeholder="Descrizione" formControlName="descrizione" #descrizioneInput
+                           (focus)="toggleFocus(descrizioneRef)" (blur)="toggleFocus(descrizioneRef)">
                 </mat-form-field>
             </div>
 
@@ -88,9 +87,6 @@ import {toggleFocus} from "../../Shared/metodUtils";
                                 <mat-option value="{{ categoria.id }}">{{ categoria.nomeCategoria }}</mat-option>
                             }
                         </mat-select>
-                        @if (transazioneForm.get('Categoria')?.invalid && transazioneForm.get('Categoria')?.hasError('required')) {
-                            <mat-error>Inserire una categoria</mat-error>
-                        }
                     </mat-form-field>
                     <button mat-mini-fab style="height: 55px" (click)="aggiungiCategoria()">
                         <mat-icon class="">add</mat-icon>
@@ -111,12 +107,14 @@ import {toggleFocus} from "../../Shared/metodUtils";
         </mat-card-footer>
         <!--        </mat-card>-->
     `,
-    styles: ``
+    styles: `
+    `
 })
 export class TransazioneComponent implements OnInit {
 
     @ViewChild('importoInput') importoRef!: ElementRef;
     @ViewChild('descrizioneInput') descrizioneRef!: ElementRef;
+    protected readonly toggleFocus = toggleFocus;
     protected readonly TIPO_TRANSAZIONE = TIPO_TRANSAZIONE;
     categorie: Categoria[] = [];
     transazioneForm = this.fb.group({
@@ -156,15 +154,18 @@ export class TransazioneComponent implements OnInit {
         if (this.transazioneForm.valid) {
             let transazione: Transazione = {
                 tipologia: this.transazioneForm.get('tipologia')!.value!,
-                categoria: this.transazioneForm.get('categoria')!.value!,
+                idCategoria: this.transazioneForm.get('categoria')!.value!,
                 importo: this.transazioneForm.get('importo')!.value!,
                 descrizione: this.transazioneForm.get('descrizione')?.value,
                 spesaRicorrente: this.transazioneForm.get('spesaRicorrente')!.value!
             }
-            this.transazioneService.aggiungiTransazione(transazione).then(res => {
-                res ? this.chiudi(res) : this.chiudi()
+            this.transazioneService.aggiungiTransazione(transazione).subscribe(res => {
+                res ? this.chiudi({
+                    res: res,
+                    provenienza: this.transazioneForm.get('tipologia')!.value!
+                }) : this.chiudi()
             });
-        }
+        } else this.transazioneForm.markAllAsTouched();
     }
 
     chiudi(data?: any) {
@@ -180,5 +181,4 @@ export class TransazioneComponent implements OnInit {
         }).afterDismissed().subscribe();
     }
 
-    protected readonly toggleFocus = toggleFocus;
 }
