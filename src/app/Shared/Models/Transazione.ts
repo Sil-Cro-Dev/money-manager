@@ -6,5 +6,9 @@ export interface Transazione {
     idCategoria: string;
     importo: number;
     descrizione?: string | null;
-    spesaRicorrente: boolean
+    spesaRicorrente: boolean;
+    giorno: number;
+    mese: number;
+    anno: number;
+    data: Date;
 }
