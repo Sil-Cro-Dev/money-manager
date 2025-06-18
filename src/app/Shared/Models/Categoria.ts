@@ -1,4 +1,4 @@
-import {TIPO_TRANSAZIONE} from "./TIPO_TRANSAZIONE";
+import {TIPO_TRANSAZIONE} from "./enums";
 
 export interface Categoria {
     id?: string;

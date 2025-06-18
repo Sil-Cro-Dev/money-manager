@@ -1,0 +1,9 @@
+export enum TIPO_TRANSAZIONE  {
+    ENTRATA = 'ENTRATA',
+    USCITA = 'USCITA'
+}
+
+export enum TIPO_BUDGET {
+    SETTIMANALE = 'SETTIMANALE',
+    MENSILE = 'MENSILE'
+}

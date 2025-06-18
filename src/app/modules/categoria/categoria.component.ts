@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {TIPO_TRANSAZIONE} from "../../Shared/Models/TIPO_TRANSAZIONE";
+import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {CategoriaService} from "../../Shared/Services/categoria.service";
 import {Categoria} from "../../Shared/Models/Categoria";
@@ -40,7 +40,7 @@ import {toggleFocus} from "../../Shared/metodUtils";
                     Nuova Transazione
                 </mat-card-title>
                 <button mat-mini-fab class="mini-fab-danger" (click)="chiudi()">
-                    <mat-icon class="color-secondary">close</mat-icon>
+                    <mat-icon class="color-danger">close</mat-icon>
                 </button>
             </mat-card-header>
 

@@ -9,7 +9,7 @@ import {TransazioneComponent} from "./modules/transazione/transazione.component"
 import {TransazioneService} from "./Shared/Services/transazione.service";
 import {PieComponent} from "./Shared/charts/pie/pie.component";
 import {CategoriaService} from "./Shared/Services/categoria.service";
-import {TIPO_TRANSAZIONE} from "./Shared/Models/TIPO_TRANSAZIONE";
+import {TIPO_TRANSAZIONE} from "./Shared/Models/enums";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {DatiGraficoTorta, PieChartComponent} from "./Shared/charts/pie-chart/pie-chart.component";
 import {JsonPipe} from "@angular/common";
@@ -63,8 +63,6 @@ export class AppComponent implements OnInit {
 
 
     constructor(
-        private transazioneService: TransazioneService,
-        private categoriaService: CategoriaService,
         private _bottomSheet: MatBottomSheet) {
     }
 

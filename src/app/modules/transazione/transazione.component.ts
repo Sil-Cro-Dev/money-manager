@@ -21,10 +21,10 @@ import {CategoriaService} from "../../Shared/Services/categoria.service";
 import {Categoria} from "../../Shared/Models/Categoria";
 import {TransazioneService} from "../../Shared/Services/transazione.service";
 import {Transazione} from "../../Shared/Models/Transazione";
-import {TIPO_TRANSAZIONE} from "../../Shared/Models/TIPO_TRANSAZIONE";
 import {CategoriaComponent} from "../categoria/categoria.component";
 import {toggleFocus} from "../../Shared/metodUtils";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
 
 @Component({
   selector: 'app-transazione',
@@ -63,7 +63,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
         Nuova Transazione
       </mat-card-title>
       <button mat-mini-fab class="mini-fab-danger" (click)="chiudi()">
-        <mat-icon class="color-secondary">close</mat-icon>
+        <mat-icon class="color-danger">close</mat-icon>
       </button>
     </mat-card-header>
 
@@ -187,7 +187,7 @@ export class TransazioneComponent implements OnInit {
         descrizione: this.transazioneForm.get('descrizione')?.value,
         spesaRicorrente: this.transazioneForm.get('spesaRicorrente')!.value!,
         data: dataTransazione,
-        giorno: dataTransazione.getDay(),
+        giorno: dataTransazione.getDate(),
         mese:  dataTransazione.getMonth(),
         anno: dataTransazione.getFullYear(),
       }

@@ -1,18 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {TransazioneService} from "../../Shared/Services/transazione.service";
-import { tap} from "rxjs";
-import {TIPO_TRANSAZIONE} from "../../Shared/Models/TIPO_TRANSAZIONE";
+import {tap} from "rxjs";
+import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
+import {BudgetComponent} from "../budget/budget.component";
+import {Transazione} from "../../Shared/Models/Transazione";
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
     imports: [
+        BudgetComponent
     ],
     template: `
         <div class="flex flex-col">
-            <span>Totale Entrate: {{totaleEntrate}}€</span>
-            <span>Totale Uscite: {{totaleUscite}}€</span>
-            <span>Bilancio: {{totaleEntrate - totaleUscite}}€</span>
+            <span>Totale Entrate: {{ totaleEntrate }}€</span>
+            <span>Totale Uscite: {{ totaleUscite }}€</span>
+            <span>Bilancio: {{ totaleEntrate - totaleUscite }}€</span>
+
+            <app-budget [transazioni]="transazioniUscite"/>
         </div>
     `,
     styles: ``
@@ -21,7 +26,7 @@ export class DashboardComponent implements OnInit {
 
     totaleEntrate: number = 0;
     totaleUscite: number = 0;
-
+    transazioniUscite: Transazione[] = [];
 
 
     constructor(private transazioneService: TransazioneService) {
@@ -36,9 +41,14 @@ export class DashboardComponent implements OnInit {
     private getTransazioni() {
         this.transazioneService.getTransazioni()
             .pipe(
-                tap( res => {
-                    this.totaleEntrate = res.filter(t => t.tipologia == TIPO_TRANSAZIONE.ENTRATA).reduce((totale, transazione) => totale + transazione.importo, 0)
-                    this.totaleUscite = res.filter(t => t.tipologia == TIPO_TRANSAZIONE.USCITA).reduce((totale, transazione) => totale + transazione.importo, 0)
+                tap(res => {
+                        this.totaleEntrate = res.filter(t => t.tipologia == TIPO_TRANSAZIONE.ENTRATA).reduce((totale, transazione) => totale + transazione.importo, 0)
+                        this.totaleUscite = res.filter(t => t.tipologia == TIPO_TRANSAZIONE.USCITA)
+                            .map(t => {
+                                this.transazioniUscite.push(t)
+                                return t
+                            })
+                            .reduce((totale, transazione) => totale + transazione.importo, 0)
                     }
                 )
             )
