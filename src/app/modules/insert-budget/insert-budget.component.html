@@ -1,0 +1,48 @@
+<app-sheet-card-header [titolo]="'Nuovo Budget'" [bottomSheetRef]="bottomSheetRef" (chiudi)="chiudi()"/>
+
+<mat-card-content [formGroup]="budgetForm">
+  <div class="flex flex-col w-full ">
+    <mat-label class="font-medium">Tipo</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select formControlName="tipoBudget">
+        <mat-option value="{{TIPO_BUDGET.SETTIMANALE}}">SETTIMANALE</mat-option>
+        <mat-option value="{{TIPO_BUDGET.MENSILE}}">MENSILE</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Importo</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <span matTextPrefix class="m-0.5">€ </span>
+      <input matInput type="number" placeholder="0,00" formControlName="importo" #importoInput [min]="0"
+
+             (focus)="toggleFocus(importoRef)" (blur)="toggleFocus(importoRef)">
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Categoria</mat-label>
+    <div class="flex flex-row gap-4">
+      <mat-form-field appearance="outline" class="w-full ">
+        <mat-select placeholder="Categoria" formControlName="idCategoria" value="">
+          @for (categoria of categorie; track categoria.id) {
+            <mat-option value="{{ categoria.id }}">{{ categoria.nomeCategoria }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-mini-fab style="height: 55px" (click)="openCat()">
+        <mat-icon class="">add</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card-content>
+
+<mat-card-footer class="flex flex-row gap-2 p-2 mt-2 justify-between w-full">
+  <button mat-fab extended class="min-w-full" (click)="aggiungiBudget()">
+    <mat-icon>add</mat-icon>
+    Aggiungi Budget
+  </button>
+</mat-card-footer>

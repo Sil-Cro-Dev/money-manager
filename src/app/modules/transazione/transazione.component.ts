@@ -17,20 +17,20 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatBottomSheet, MatBottomSheetRef} from "@angular/material/bottom-sheet";
-import {CategoriaService} from "../../Shared/Services/categoria.service";
+import {CategoriaService} from "../categoria/categoria.service";
 import {Categoria} from "../../Shared/Models/Categoria";
-import {TransazioneService} from "../../Shared/Services/transazione.service";
+import {TransazioneService} from "./transazione.service";
 import {Transazione} from "../../Shared/Models/Transazione";
-import {CategoriaComponent} from "../categoria/categoria.component";
 import {toggleFocus} from "../../Shared/metodUtils";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
+import {SheetCardHeaderComponent} from "../../Shared/theme/sheet-card-heade/sheet-card-header.component";
+import {openAggiungiCategoria} from "../categoria/categoriaUtils";
 
 @Component({
   selector: 'app-transazione',
   standalone: true,
-  providers: [
-  ],
+  providers: [],
   imports: [
     MatCard,
     MatCardTitle,
@@ -54,87 +54,11 @@ import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
     MatDatepicker,
     MatDatepickerToggle,
     MatHint,
-    MatSuffix
+    MatSuffix,
+    SheetCardHeaderComponent
   ],
-  template: `
-    <!--        <mat-card class="w-full ">-->
-    <mat-card-header class="flex flex-row flex-wrap items-center justify-between mb-2">
-      <mat-card-title class=" from-finance-blue font-semibold">
-        Nuova Transazione
-      </mat-card-title>
-      <button mat-mini-fab class="mini-fab-danger" (click)="chiudi()">
-        <mat-icon class="color-danger">close</mat-icon>
-      </button>
-    </mat-card-header>
-
-    <mat-card-content [formGroup]="transazioneForm">
-      <div class="flex flex-col w-full ">
-        <mat-label class="font-medium">Tipo</mat-label>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select formControlName="tipologia">
-            <mat-option value="{{TIPO_TRANSAZIONE.USCITA}}">Uscita</mat-option>
-            <mat-option value="{{TIPO_TRANSAZIONE.ENTRATA}}">Entrata</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="flex flex-col w-full">
-        <mat-label class="font-medium">Importo</mat-label>
-        <mat-form-field appearance="outline" class="w-full">
-          <input matInput type="number" placeholder="0,00" formControlName="importo" #importoInput
-                 (focus)="toggleFocus(importoRef)" (blur)="toggleFocus(importoRef)">
-          <span matTextPrefix>€&nbsp;</span>
-        </mat-form-field>
-      </div>
-
-      <div class="flex flex-col w-full">
-        <mat-label class="font-medium">Data transazione</mat-label>
-        <mat-form-field appearance="outline">
-          <input matInput [matDatepicker]="picker" formControlName="data">
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
-
-      <div class="flex flex-col w-full">
-        <mat-label class="font-medium">Descrizione</mat-label>
-        <mat-form-field appearance="outline" class="w-full ">
-          <input matInput placeholder="Descrizione" formControlName="descrizione" #descrizioneInput
-                 (focus)="toggleFocus(descrizioneRef)" (blur)="toggleFocus(descrizioneRef)">
-        </mat-form-field>
-      </div>
-
-      <div class="flex flex-col w-full">
-        <mat-label class="font-medium">Categoria</mat-label>
-        <div class="flex flex-row gap-4">
-          <mat-form-field appearance="outline" class="w-full ">
-            <mat-select placeholder="Categoria" formControlName="categoria" value="">
-              @for (categoria of categorie; track categoria.id) {
-                <mat-option value="{{ categoria.id }}">{{ categoria.nomeCategoria }}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-          <button mat-mini-fab style="height: 55px" (click)="aggiungiCategoria()">
-            <mat-icon class="">add</mat-icon>
-          </button>
-        </div>
-      </div>
-
-      <mat-slide-toggle color='primary' formControlName="spesaRicorrente"><b> Spesa fissa (si ripete ogni
-        mese) </b></mat-slide-toggle>
-
-
-    </mat-card-content>
-    <mat-card-footer class="flex flex-row gap-2 p-2 mt-2 justify-between w-full">
-      <button mat-fab extended class="min-w-full" (click)="aggiungiTransazione()">
-        <mat-icon>add</mat-icon>
-        Aggiungi transazione
-      </button>
-    </mat-card-footer>
-    <!--        </mat-card>-->
-  `,
-  styles: `
-  `
+  templateUrl: 'transazione.component.html',
+  styles: ``
 })
 export class TransazioneComponent implements OnInit {
 
@@ -153,9 +77,9 @@ export class TransazioneComponent implements OnInit {
   });
 
   constructor(
+    protected bottomSheetRef: MatBottomSheetRef<TransazioneComponent>,
     private fb: FormBuilder,
     private _bottomSheet: MatBottomSheet,
-    private bottomSheetRef: MatBottomSheetRef<TransazioneComponent>,
     private categoriaService: CategoriaService,
     private transazioneService: TransazioneService
   ) {
@@ -166,13 +90,13 @@ export class TransazioneComponent implements OnInit {
   }
 
   initSelectTipologia() {
-    this.categoriaService.getCategorieUscita().then((res) => this.categorie = res)
+    this.categoriaService.getCategorieUscita().subscribe((res) => this.categorie = res)
 
     this.transazioneForm.get('tipologia')?.valueChanges.subscribe(
       val => (val != null)
         ? val == TIPO_TRANSAZIONE.USCITA
-          ? this.categoriaService.getCategorieUscita().then(res => this.categorie = res)
-          : this.categoriaService.getCategorieEntrata().then(res => this.categorie = res)
+          ? this.categoriaService.getCategorieUscita().subscribe(res => this.categorie = res)
+          : this.categoriaService.getCategorieEntrata().subscribe(res => this.categorie = res)
         : null
     )
   }
@@ -188,7 +112,7 @@ export class TransazioneComponent implements OnInit {
         spesaRicorrente: this.transazioneForm.get('spesaRicorrente')!.value!,
         data: dataTransazione,
         giorno: dataTransazione.getDate(),
-        mese:  dataTransazione.getMonth(),
+        mese: dataTransazione.getMonth(),
         anno: dataTransazione.getFullYear(),
       }
       this.transazioneService.aggiungiTransazione(transazione).subscribe(res => {
@@ -200,17 +124,14 @@ export class TransazioneComponent implements OnInit {
     } else this.transazioneForm.markAllAsTouched();
   }
 
-  chiudi(data?: any) {
-    this.bottomSheetRef.dismiss(data);
+//   Gestione dello Sheet
+
+  openCat() {
+    openAggiungiCategoria(this._bottomSheet, 'transazione', this.transazioneForm.get('tipologia')!.value!)
   }
 
-  aggiungiCategoria() {
-    this._bottomSheet.open(CategoriaComponent, {
-      data: {
-        provenienza: 'transazione',
-        tipologia: this.transazioneForm.get('tipologia')!.value!
-      }
-    }).afterDismissed().subscribe();
+  chiudi(data?: any) {
+    this.bottomSheetRef.dismiss(data);
   }
 
 }

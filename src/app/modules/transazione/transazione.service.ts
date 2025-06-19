@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {addDoc, collection, Firestore, getDocs, query, where} from "@angular/fire/firestore";
-import {Transazione} from "../Models/Transazione";
-import {Categoria} from "../Models/Categoria";
-import {TIPO_TRANSAZIONE} from "../Models/enums";
+import {Transazione} from "../../Shared/Models/Transazione";
+import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
 import {from, Observable} from "rxjs";
 
 @Injectable({

@@ -1,0 +1,66 @@
+<app-sheet-card-header [titolo]="'Nuova Transazione'" [bottomSheetRef]="bottomSheetRef" (chiudi)="chiudi()"/>
+
+<mat-card-content [formGroup]="transazioneForm">
+  <div class="flex flex-col w-full ">
+    <mat-label class="font-medium">Tipo</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select formControlName="tipologia">
+        <mat-option value="{{TIPO_TRANSAZIONE.USCITA}}">Uscita</mat-option>
+        <mat-option value="{{TIPO_TRANSAZIONE.ENTRATA}}">Entrata</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Importo</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <input matInput type="number" placeholder="0,00" formControlName="importo" #importoInput
+             (focus)="toggleFocus(importoRef)" (blur)="toggleFocus(importoRef)">
+      <span matTextPrefix>€&nbsp;</span>
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Data transazione</mat-label>
+    <mat-form-field appearance="outline">
+      <input matInput [matDatepicker]="picker" formControlName="data">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Descrizione</mat-label>
+    <mat-form-field appearance="outline" class="w-full ">
+      <input matInput placeholder="Descrizione" formControlName="descrizione" #descrizioneInput
+             (focus)="toggleFocus(descrizioneRef)" (blur)="toggleFocus(descrizioneRef)">
+    </mat-form-field>
+  </div>
+
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Categoria</mat-label>
+    <div class="flex flex-row gap-4">
+      <mat-form-field appearance="outline" class="w-full ">
+        <mat-select placeholder="Categoria" formControlName="categoria" value="">
+          @for (categoria of categorie; track categoria.id) {
+            <mat-option value="{{ categoria.id }}">{{ categoria.nomeCategoria }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-mini-fab style="height: 55px" (click)="openCat()">
+        <mat-icon class="">add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-slide-toggle color='primary' formControlName="spesaRicorrente"><b> Spesa fissa (si ripete ogni mese) </b>
+  </mat-slide-toggle>
+
+</mat-card-content>
+
+<mat-card-footer class="flex flex-row gap-2 p-2 mt-2 justify-between w-full">
+  <button mat-fab extended class="min-w-full" (click)="aggiungiTransazione()">
+    <mat-icon>add</mat-icon>
+    Aggiungi transazione
+  </button>
+</mat-card-footer>

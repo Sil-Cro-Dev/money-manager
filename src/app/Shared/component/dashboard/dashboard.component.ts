@@ -1,23 +1,27 @@
 import {Component, OnInit} from '@angular/core';
-import {TransazioneService} from "../../Shared/Services/transazione.service";
+import {TransazioneService} from "../../../modules/transazione/transazione.service";
 import {tap} from "rxjs";
-import {TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
-import {BudgetComponent} from "../budget/budget.component";
-import {Transazione} from "../../Shared/Models/Transazione";
+import {TIPO_TRANSAZIONE} from "../../Models/enums";
+import {Transazione} from "../../Models/Transazione";
+import {MatFabButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-    imports: [
-        BudgetComponent
-    ],
+  imports: [
+    MatFabButton,
+    MatIcon,
+    // BudgetComponent
+  ],
     template: `
         <div class="flex flex-col">
             <span>Totale Entrate: {{ totaleEntrate }}€</span>
             <span>Totale Uscite: {{ totaleUscite }}€</span>
             <span>Bilancio: {{ totaleEntrate - totaleUscite }}€</span>
 
-            <app-budget [transazioni]="transazioniUscite"/>
+<!--            <app-budget [transazioni]="transazioniUscite"/>-->
+
         </div>
     `,
     styles: ``
@@ -54,4 +58,6 @@ export class DashboardComponent implements OnInit {
             )
             .subscribe()
     }
+
+
 }

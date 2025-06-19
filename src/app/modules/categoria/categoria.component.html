@@ -1,0 +1,27 @@
+<app-sheet-card-header [titolo]="'Nuova Categoria'" [bottomSheetRef]="bottomSheetRef" (chiudi)="chiudi()"/>
+
+<mat-card-content [formGroup]="categoriaForm">
+  <div class="flex flex-col w-full ">
+    <mat-label class="font-medium">Tipo</mat-label>
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-select formControlName="tipologia">
+        <mat-option value="{{TIPO_TRANSAZIONE.USCITA}}">USCITA</mat-option>
+        <mat-option value="{{TIPO_TRANSAZIONE.ENTRATA}}">ENTRATA</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="flex flex-col w-full">
+    <mat-label class="font-medium">Descrizione</mat-label>
+    <mat-form-field appearance="outline" class="w-full ">
+      <input matInput placeholder="Nome Categoria" formControlName="nomeCategoria" #nomeCategoriaInput
+             (focus)="toggleFocus(nomeCategoriaRef)" (blur)="toggleFocus(nomeCategoriaRef)">
+    </mat-form-field>
+  </div>
+</mat-card-content>
+
+<mat-card-footer class="flex flex-row gap-2 p-2 mt-2 justify-between w-full">
+  <button mat-fab extended class="min-w-full" (click)="aggiungiCategoria()">
+    <mat-icon>add</mat-icon>
+    Aggiungi Categoria
+  </button>
+</mat-card-footer>
