@@ -12,7 +12,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {PieChartComponent} from "./Shared/charts/pie-chart/pie-chart.component";
 import {JsonPipe} from "@angular/common";
 import {DashboardComponent} from "./Shared/component/dashboard/dashboard.component";
-import {InsertBudgetComponent} from "./modules/insert-budget/insert-budget.component";
+import {InsertBudgetComponent} from "./modules/budget/insert-budget/insert-budget.component";
 
 @Component({
     selector: 'app-root',
@@ -42,10 +42,6 @@ import {InsertBudgetComponent} from "./modules/insert-budget/insert-budget.compo
         <mat-tab-group class="w-full min-h-full">
           <mat-tab label="📊 Dashboard">
             <app-dashboard/>
-            <button mat-fab color="primary"
-                    (click)="apriBudget()">
-              <mat-icon>add</mat-icon>
-            </button>
           </mat-tab>
           <mat-tab label="💸 Transazioni">Transazioni</mat-tab>
           <mat-tab label="🏷️ Categorie">Categorie</mat-tab>
@@ -87,9 +83,6 @@ export class AppComponent implements OnInit {
     getEntrate() {
     }
 
-  apriBudget() {
-    this._bottomSheet.open(InsertBudgetComponent).afterDismissed()
-      .subscribe();
-  }
+
 
 }

@@ -5,22 +5,24 @@ import {TIPO_TRANSAZIONE} from "../../Models/enums";
 import {Transazione} from "../../Models/Transazione";
 import {MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
+import {BudgetComponent} from "../../../modules/budget/budget.component";
 
 @Component({
     selector: 'app-dashboard',
     standalone: true,
-  imports: [
-    MatFabButton,
-    MatIcon,
-    // BudgetComponent
-  ],
+    imports: [
+        MatFabButton,
+        MatIcon,
+        BudgetComponent,
+        // BudgetComponent
+    ],
     template: `
         <div class="flex flex-col">
             <span>Totale Entrate: {{ totaleEntrate }}€</span>
             <span>Totale Uscite: {{ totaleUscite }}€</span>
             <span>Bilancio: {{ totaleEntrate - totaleUscite }}€</span>
 
-<!--            <app-budget [transazioni]="transazioniUscite"/>-->
+            <app-budget [transazioni]="transazioniUscite"/>
 
         </div>
     `,

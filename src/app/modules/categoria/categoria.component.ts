@@ -13,7 +13,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
 import {TransazioneComponent} from "../transazione/transazione.component";
 import {toggleFocus} from "../../Shared/metodUtils";
-import {InsertBudgetComponent} from "../insert-budget/insert-budget.component";
+import {InsertBudgetComponent} from "../budget/insert-budget/insert-budget.component";
 import {SheetCardHeaderComponent} from "../../Shared/theme/sheet-card-heade/sheet-card-header.component";
 
 @Component({

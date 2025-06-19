@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BudgetService} from "./budget.service";
-import {CategoriaService} from "../categoria/categoria.service";
-import {Categoria} from "../../Shared/Models/Categoria";
+import {BudgetService} from "../budget.service";
+import {CategoriaService} from "../../categoria/categoria.service";
+import {Categoria} from "../../../Shared/Models/Categoria";
 import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {TIPO_BUDGET, TIPO_TRANSAZIONE} from "../../Shared/Models/enums";
+import {TIPO_BUDGET, TIPO_TRANSAZIONE} from "../../../Shared/Models/enums";
 import {MatFormField, MatLabel, MatPrefix} from "@angular/material/form-field";
 import {MatIcon} from "@angular/material/icon";
 import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
@@ -11,11 +11,11 @@ import {MatOption} from "@angular/material/core";
 import {MatSelect} from "@angular/material/select";
 import {MatBottomSheet, MatBottomSheetRef} from "@angular/material/bottom-sheet";
 import {MatCardContent, MatCardFooter, MatCardHeader, MatCardTitle} from "@angular/material/card";
-import {SheetCardHeaderComponent} from "../../Shared/theme/sheet-card-heade/sheet-card-header.component";
-import {toggleFocus} from "../../Shared/metodUtils";
+import {SheetCardHeaderComponent} from "../../../Shared/theme/sheet-card-heade/sheet-card-header.component";
+import {toggleFocus} from "../../../Shared/metodUtils";
 import {MatInput} from "@angular/material/input";
-import {openAggiungiCategoria} from "../categoria/categoriaUtils";
-import {Budget} from "../../Shared/Models/Budget";
+import {openAggiungiCategoria} from "../../categoria/categoriaUtils";
+import {Budget} from "../../../Shared/Models/Budget";
 import {merge} from "rxjs";
 
 @Component({
