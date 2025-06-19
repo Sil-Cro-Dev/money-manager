@@ -1,0 +1,36 @@
+<mat-card class="m-2 p-2">
+    <mat-card-header class="flex flex-row justify-between">
+        <mat-card-title class="from-finance-blue">Budget per Categoria</mat-card-title>
+        <button mat-mini-fab class="mini-fab-warn"
+                (click)="apriBudget()">
+            <mat-icon class="color-warn">add</mat-icon>
+        </button>
+    </mat-card-header>
+
+    <div class="p-4 flex flex-col">
+        @for (budgetCat of budgets; track budgetCat) {
+            <mat-card-header class="flex flex-col">
+                <mat-card-title class="from-finance-blue">{{ budgetCat.nomeCategoria }}</mat-card-title>
+                <div class=" flex flex-row justify-between text-sm ">
+                    <span class="text-gray-500 ml-2">Budget: €{{ budgetCat.importo.toFixed(2) }}</span>
+                    <span style="border: 1px solid"
+                          class="border-gray-600 rounded-full px-2">
+                                {{ percentualeUsata(budgetCat) | number:'1.0-0' }}%
+                            </span>
+                </div>
+            </mat-card-header>
+            <mat-card-footer class=" m-2">
+                <span>€{{ getSpesaPerBudget(budgetCat).toFixed(2) }} spesi - </span>
+                <span>€{{ rimanente(budgetCat).toFixed(2) }} rimanenti</span>
+                <mat-progress-bar [value]="percentualeUsata(budgetCat)"
+                                  mode="determinate"
+                                  color="{{ percentualeUsata(budgetCat) > 75 ? 'warn' : 'accent'}}"/>
+                <span class="text-xs text-gray-500 italic mb-1 block">
+                            Riferito a: {{ budgetCat.tipoBudget === TIPO_BUDGET.SETTIMANALE ? 'Settimana ' + getNumeroSettimanaCorrente() + ' di ' + today.getFullYear() : meseCorrente }}
+                        </span>
+            </mat-card-footer>
+
+
+        }
+    </div>
+</mat-card>
