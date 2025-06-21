@@ -6,6 +6,7 @@ import {Transazione} from "../../Models/Transazione";
 import {MatFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {BudgetComponent} from "../../../modules/budget/budget.component";
+import {BilancioTotaleComponent} from "./bilancio-totale/bilancio-totale.component";
 
 @Component({
     selector: 'app-dashboard',
@@ -14,16 +15,15 @@ import {BudgetComponent} from "../../../modules/budget/budget.component";
         MatFabButton,
         MatIcon,
         BudgetComponent,
+        BilancioTotaleComponent,
         // BudgetComponent
     ],
     template: `
         <div class="flex flex-col">
-            <span>Totale Entrate: {{ totaleEntrate }}€</span>
-            <span>Totale Uscite: {{ totaleUscite }}€</span>
-            <span>Bilancio: {{ totaleEntrate - totaleUscite }}€</span>
-
+            <app-bilancio-totale [entrate]="totaleEntrate" [uscite]="totaleUscite" />
+          
             <app-budget [transazioni]="transazioniUscite"/>
-
+            
         </div>
     `,
     styles: ``
@@ -45,7 +45,8 @@ export class DashboardComponent implements OnInit {
 
 
     private getTransazioni() {
-        this.transazioneService.getTransazioni()
+        this.transazioneService
+            .getTransazioni()
             .pipe(
                 tap(res => {
                         this.totaleEntrate = res.filter(t => t.tipologia == TIPO_TRANSAZIONE.ENTRATA).reduce((totale, transazione) => totale + transazione.importo, 0)

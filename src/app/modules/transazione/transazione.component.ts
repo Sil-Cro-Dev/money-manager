@@ -112,7 +112,7 @@ export class TransazioneComponent implements OnInit {
         spesaRicorrente: this.transazioneForm.get('spesaRicorrente')!.value!,
         data: dataTransazione,
         giorno: dataTransazione.getDate(),
-        mese: dataTransazione.getMonth(),
+        mese: dataTransazione.getMonth() + 1,
         anno: dataTransazione.getFullYear(),
       }
       this.transazioneService.aggiungiTransazione(transazione).subscribe(res => {

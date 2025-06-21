@@ -31,7 +31,7 @@ export class TransazioneService {
     }
 
     getTransazioni(): Observable<Transazione[]> {
-        return from(getDocs(query(this.transazione, where('tipologia', '!=', ''))).then(res => res.docs.map(doc => {
+        return from(getDocs(query(this.transazione, where('mese', '==', new Date().getMonth() + 1))).then(res => res.docs.map(doc => {
             return {...doc.data(), id: doc.id};
         })) as Promise<Transazione[]>) as Observable<Transazione[]>;
     }

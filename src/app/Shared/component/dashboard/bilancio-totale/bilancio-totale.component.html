@@ -1,0 +1,22 @@
+<div class="p-2 flex flex-col">
+    <mat-card-header class="flex flex-col">
+        <mat-card-title class=" p-0 from-finance-blue">Bilancio</mat-card-title>
+        <div class=" flex flex-row justify-between text-sm ">
+            <span class="text-gray-500 ml-2">Entrate: €{{ rimanente() }}</span>
+            <span style="border: 1px solid" class="border-gray-600 rounded-full px-2">
+                    {{ percentualeUsata() | number:'1.0-0' }}%
+                </span>
+        </div>
+    </mat-card-header>
+
+    <mat-card-footer class=" m-2">
+        <span>€{{ uscite.toFixed(2) }} spesi - </span>
+        <span>€{{ rimanente().toFixed(2) }} rimanenti</span>
+        <mat-progress-bar [value]="percentualeUsata()"
+                          mode="determinate"
+                          color="{{ percentualeUsata() > 75 ? 'warn' : 'accent'}}"/>
+        <span class="text-xs text-gray-500 italic mb-1 block">
+                Riferito a: {{ meseCorrente(today) }}
+            </span>
+    </mat-card-footer>
+</div>
