@@ -56,9 +56,6 @@ import {DashboardComponent} from "./Shared/component/dashboard/dashboard.compone
 })
 export class AppComponent implements OnInit {
 
-    isLoading: boolean = false;
-
-
     constructor(
         private _bottomSheet: MatBottomSheet) {
     }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {addDoc, collection, Firestore, getDocs, orderBy, query, where} from "@angular/fire/firestore";
+import {addDoc, collection, deleteDoc, doc, Firestore, getDocs, orderBy, query, where} from "@angular/fire/firestore";
 import {Budget} from "../../Shared/Models/Budget";
 
 @Injectable({
@@ -23,6 +23,10 @@ export class BudgetService {
             )).then(res => res.docs.map(doc => {
             return {...doc.data(), id: doc.id};
         })) as Promise<Budget[]>;
+    }
+
+    rimuoviBudget(id: string): Promise<any> {
+        return deleteDoc(doc(this.budget, id));
     }
 
 
