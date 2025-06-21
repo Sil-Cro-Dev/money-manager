@@ -6,7 +6,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatLabel} from "@angular/material/form-field";
 import {Transazione} from "../../Shared/Models/Transazione";
 import {DecimalPipe} from "@angular/common";
-import {MatFabButton, MatMiniFabButton} from "@angular/material/button";
+import {MatButton, MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {InsertBudgetComponent} from "./insert-budget/insert-budget.component";
 import {MatBottomSheet} from "@angular/material/bottom-sheet";
@@ -29,6 +29,8 @@ import {meseCorrente} from "../../Shared/metodUtils";
         MatFabButton,
         MatIcon,
         MatMiniFabButton,
+        MatButton,
+        MatIconButton,
     ],
     templateUrl: 'budget.component.html',
     styles: ``

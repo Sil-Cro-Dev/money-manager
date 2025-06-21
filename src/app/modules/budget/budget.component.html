@@ -10,15 +10,20 @@
     <div class="p-4 flex flex-col">
 
         @for (budgetCat of budgets; track budgetCat) {
-            <mat-card-header class="flex flex-col">
-                <mat-card-title class="from-finance-blue">{{ budgetCat.nomeCategoria }}</mat-card-title>
-                <div class=" flex flex-row justify-between text-sm ">
-                    <span class="text-gray-500 ml-2">Budget: €{{ budgetCat.importo.toFixed(2) }}</span>
-                    <span style="border: 1px solid" class="border-gray-600 rounded-full px-2">
+            <div class="flex flex-row items-center">
+                <button mat-icon-button>
+                    <mat-icon class="color-danger">remove_circle_outline</mat-icon>
+                </button>
+                <mat-card-header class="flex flex-col w-full">
+                    <mat-card-title class="from-finance-blue">{{ budgetCat.nomeCategoria }}</mat-card-title>
+                    <div class=" flex flex-row justify-between text-sm ">
+                        <span class="text-gray-500 ml-2">Budget: €{{ budgetCat.importo.toFixed(2) }}</span>
+                        <span style="border: 1px solid" class="border-gray-600 rounded-full px-2">
                                 {{ percentualeUsata(budgetCat) | number:'1.0-0' }}%
-                    </span>
-                </div>
-            </mat-card-header>
+                        </span>
+                    </div>
+                </mat-card-header>
+            </div>
 
             <mat-card-footer class=" m-2">
                 <span>€{{ getBilancioBudget(budgetCat).toFixed(2) }} spesi - </span>
