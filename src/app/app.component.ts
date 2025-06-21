@@ -12,7 +12,6 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 import {PieChartComponent} from "./Shared/charts/pie-chart/pie-chart.component";
 import {JsonPipe} from "@angular/common";
 import {DashboardComponent} from "./Shared/component/dashboard/dashboard.component";
-import {InsertBudgetComponent} from "./modules/budget/insert-budget/insert-budget.component";
 
 @Component({
     selector: 'app-root',
@@ -39,14 +38,14 @@ import {InsertBudgetComponent} from "./modules/budget/insert-budget/insert-budge
     providers: [],
     template: `
       <mat-card class="h-full rounded-none" style="border-radius: 0">
-        <mat-tab-group class="w-full min-h-full">
-          <mat-tab label="📊 Dashboard">
-            <app-dashboard/>
+        <mat-tab-group class="w-full h-full">
+          <mat-tab class="h-full" label="📊 Dashboard">
+            <app-dashboard class="h-full"  />
           </mat-tab>
           <mat-tab label="💸 Transazioni">Transazioni</mat-tab>
           <mat-tab label="🏷️ Categorie">Categorie</mat-tab>
         </mat-tab-group>
-        <button mat-fab color="primary" style="position: fixed" class="fixed right-4 bottom-4"
+        <button mat-fab color="primary" style="position: fixed; z-index: 1;" class="fixed right-4 bottom-4"
                 (click)="apriTransazioni()">
           <mat-icon>add</mat-icon>
         </button>

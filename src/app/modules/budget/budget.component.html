@@ -32,7 +32,7 @@
                                   mode="determinate"
                                   color="{{ percentualeUsata(budgetCat) > 75 ? 'warn' : 'accent'}}"/>
                 <span class="text-xs text-gray-500 italic mb-1 block">
-                    Riferito a: {{ budgetCat.tipoBudget === TIPO_BUDGET.SETTIMANALE ? 'Settimana ' + getNumeroSettimanaCorrente() + ' di ' + today.getFullYear() : meseCorrente }}
+                    Riferito a: {{ budgetCat.tipoBudget === TIPO_BUDGET.SETTIMANALE ? 'Settimana ' + getNumeroSettimanaCorrente() + ' di ' + today.getFullYear() : meseCorrente(today) }}
                 </span>
             </mat-card-footer>
         }

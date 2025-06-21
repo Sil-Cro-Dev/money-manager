@@ -16,89 +16,85 @@ import {toggleFocus} from "../../../Shared/metodUtils";
 import {MatInput} from "@angular/material/input";
 import {openAggiungiCategoria} from "../../categoria/categoriaUtils";
 import {Budget} from "../../../Shared/Models/Budget";
-import {merge} from "rxjs";
 
 @Component({
-  selector: 'app-insert-budget',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatIcon,
-    MatLabel,
-    MatMiniFabButton,
-    MatOption,
-    MatSelect,
-    ReactiveFormsModule,
-    MatCardHeader,
-    MatCardTitle,
-    SheetCardHeaderComponent,
-    MatCardContent,
-    MatCardFooter,
-    MatFabButton,
-    MatInput,
-    MatPrefix
-  ],
-  templateUrl: 'insert-budget.component.html',
-  styles: ``
+    selector: 'app-insert-budget',
+    standalone: true,
+    imports: [
+        MatFormField,
+        MatIcon,
+        MatLabel,
+        MatMiniFabButton,
+        MatOption,
+        MatSelect,
+        ReactiveFormsModule,
+        MatCardHeader,
+        MatCardTitle,
+        SheetCardHeaderComponent,
+        MatCardContent,
+        MatCardFooter,
+        MatFabButton,
+        MatInput,
+        MatPrefix
+    ],
+    templateUrl: 'insert-budget.component.html',
+    styles: ``
 })
 export class InsertBudgetComponent implements OnInit {
 
-  @ViewChild('importoInput') importoRef!: ElementRef;
-  protected readonly TIPO_BUDGET = TIPO_BUDGET;
-  protected readonly toggleFocus = toggleFocus;
-  categorie: Categoria[] = [];
-  budgetForm = this.fb.group({
-    tipoBudget: [TIPO_BUDGET.SETTIMANALE, Validators.required],
-    importo: [null, Validators.required],
-    idCategoria: [null, Validators.required]
-  });
+    @ViewChild('importoInput') importoRef!: ElementRef;
+    protected readonly TIPO_BUDGET = TIPO_BUDGET;
+    protected readonly toggleFocus = toggleFocus;
+    categorie: Categoria[] = [];
+    budgetForm = this.fb.group({
+        tipoBudget: [TIPO_BUDGET.SETTIMANALE, Validators.required],
+        importo: [null, Validators.required],
+        idCategoria: [null, Validators.required]
+    });
 
-  constructor(
-    protected bottomSheetRef: MatBottomSheetRef<InsertBudgetComponent>,
-    private fb: FormBuilder,
-    private _bottomSheet: MatBottomSheet,
-    private budgetService: BudgetService,
-    private categoriaService: CategoriaService,
-  ) {
-  }
+    constructor(
+        protected bottomSheetRef: MatBottomSheetRef<InsertBudgetComponent>,
+        private fb: FormBuilder,
+        private _bottomSheet: MatBottomSheet,
+        private budgetService: BudgetService,
+        private categoriaService: CategoriaService,
+    ) {
+    }
 
-  ngOnInit(): void {
-    this.initCategoriaSelect()
-  }
+    ngOnInit(): void {
+        this.initCategoriaSelect()
+    }
 
-  initCategoriaSelect() {
-    const $catUsc = this.categoriaService.getCategorieUscita();
-    const $catEnt = this.categoriaService.getCategorieEntrata();
+    initCategoriaSelect() {
+        this.categoriaService.getCategorieUscita().subscribe((res) => this.categorie = res);
+    }
 
-    merge($catUsc, $catEnt).subscribe((res) => this.categorie.push(...res))
-  }
+    aggiungiBudget() {
+        if (this.budgetForm.valid) {
+            let idCat = this.budgetForm.get('idCategoria')!.value!
+            let budget: Budget = {
+                idCategoria: idCat,
+                nomeCategoria: this.categorie.find(cat => cat.id == idCat)?.nomeCategoria,
+                tipoBudget: this.budgetForm.get('tipoBudget')!.value!,
+                importo: this.budgetForm.get('importo')!.value!
+            }
 
-  aggiungiBudget() {
-    if (this.budgetForm.valid) {
-      let idCat = this.budgetForm.get('idCategoria')!.value!
-      let budget: Budget = {
-        idCategoria: idCat,
-        nomeCategoria: this.categorie.find(cat => cat.id == idCat)?.nomeCategoria,
-        tipoBudget: this.budgetForm.get('tipoBudget')!.value!,
-        importo: this.budgetForm.get('importo')!.value!
-      }
+            this.budgetService.aggiungiBudget(budget).then(r => {
+                if (r) this.chiudi(r);
+            })
+        } else this.budgetForm.markAllAsTouched();
 
-      this.budgetService.aggiungiBudget(budget).then(r => {
-        if(r) this.chiudi(r);
-      })
-    } else this.budgetForm.markAllAsTouched();
-
-  }
+    }
 
 //   Gestione dello sheet
 
-  openCat() {
-    openAggiungiCategoria(this._bottomSheet, 'budget', TIPO_TRANSAZIONE.USCITA)
-  }
+    openCat() {
+        openAggiungiCategoria(this._bottomSheet, 'budget', TIPO_TRANSAZIONE.USCITA)
+    }
 
-  chiudi(data?: any) {
-    this.bottomSheetRef.dismiss(data);
-  }
+    chiudi(data?: any) {
+        this.bottomSheetRef.dismiss(data);
+    }
 
 
 }
